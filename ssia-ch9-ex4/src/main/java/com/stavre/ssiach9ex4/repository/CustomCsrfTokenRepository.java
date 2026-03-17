@@ -4,6 +4,8 @@ import com.stavre.ssiach9ex4.entity.Token;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
@@ -13,28 +15,36 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 import java.util.UUID;
 
-
-@RequiredArgsConstructor
+@Slf4j
 @Component
 public class CustomCsrfTokenRepository implements CsrfTokenRepository {
 
+    public static final String X_IDENTIFIER = "X-IDENTIFIER";
     private final JpaTokenRepository jpaTokenRepository;
 
-    @Override
-    public CsrfToken generateToken(HttpServletRequest request) {
-        String uuid = UUID.randomUUID().toString();
-        return new DefaultCsrfToken("X-CSRF-TOKEN","_csrf", uuid);
+    public CustomCsrfTokenRepository(JpaTokenRepository jpaTokenRepository) {
+        this.jpaTokenRepository = jpaTokenRepository;
     }
 
     @Override
-    public void saveToken(@Nullable CsrfToken csrfToken, HttpServletRequest request, HttpServletResponse response) {
+    public @NonNull CsrfToken generateToken(@NonNull HttpServletRequest request) {
+        log.info("generate token");
 
-        String identifier = request.getHeader("X-IDENTIFIER");
+        String uuid = UUID.randomUUID().toString();
+        return new DefaultCsrfToken("X-CSRF-TOKEN", "_csrf", uuid);
+    }
+
+    @Override
+    public void saveToken(@Nullable CsrfToken csrfToken, HttpServletRequest request, @NonNull HttpServletResponse response) {
+        log.info("Save token");
+
+        String identifier = request.getHeader(X_IDENTIFIER);
         Optional<Token> existingToken = jpaTokenRepository.findTokenByIdentifier(identifier);
 
         if (existingToken.isPresent()) {
             Token token = existingToken.get();
             token.setToken(csrfToken.getToken());
+
         } else {
             Token token = new Token();
             token.setToken(csrfToken.getToken());
@@ -43,12 +53,13 @@ public class CustomCsrfTokenRepository implements CsrfTokenRepository {
         }
 
 
-
     }
 
     @Override
     public @Nullable CsrfToken loadToken(HttpServletRequest request) {
-        String identifier = request.getHeader("X-IDENTIFIER");
+        log.info("load token");
+
+        String identifier = request.getHeader(X_IDENTIFIER);
         Optional<Token> existingToken = jpaTokenRepository.findTokenByIdentifier(identifier);
 
         if (existingToken.isEmpty()) {
@@ -56,6 +67,9 @@ public class CustomCsrfTokenRepository implements CsrfTokenRepository {
         }
 
         Token token = existingToken.get();
-        return new DefaultCsrfToken("X-CSRF-TOKEN", "_csrf", token.getToken());
+        CsrfToken csrfToken = new DefaultCsrfToken("X-CSRF-TOKEN", "_csrf", token.getToken());
+//        request.setAttribute("X-CSRF-TOKEN", csrfToken);
+
+        return csrfToken;
     }
 }

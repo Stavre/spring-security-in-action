@@ -13,7 +13,7 @@ public class SecurityFilterChainConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
 
-        RegexRequestMatcher r = new RegexRequestMatcher("/tschuss", HttpMethod.POST.name());
+        RegexRequestMatcher r = new RegexRequestMatcher("/tsch.?", HttpMethod.POST.name());
 
         http.csrf(c -> {
             c.ignoringRequestMatchers("/ciao");

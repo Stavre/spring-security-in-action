@@ -7,7 +7,5 @@ import java.util.Optional;
 
 public interface JpaTokenRepository extends JpaRepository<Token, Integer> {
     Optional<Token> findTokenByIdentifier(String identifier);
-
-    Token save(Token token);
 }
 
