@@ -1,0 +1,7 @@
+info:
+  name: ch11-ex1
+  type: folder
+  seq: 3
+
+request:
+  auth: inherit

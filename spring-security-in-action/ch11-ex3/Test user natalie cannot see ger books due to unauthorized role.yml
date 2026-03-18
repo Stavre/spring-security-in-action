@@ -1,0 +1,18 @@
+info:
+  name: Test user natalie cannot see ger books due to unauthorized role
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: http://localhost:8080/book/details/natalie
+  auth:
+    type: basic
+    username: natalie
+    password: "123"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

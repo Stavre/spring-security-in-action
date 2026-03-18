@@ -1,0 +1,25 @@
+info:
+  name: Test post  request works only with csrf header
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: http://localhost:8080/hello
+  headers:
+    - name: X-IDENTIFIER
+      value: "12345"
+    - name: x-csrf-token
+      value: ey1vuJunrVgWyWbb3wnsvQVA3DLUuvSJTcef4zefev_W5e0WTBtdifnDzDk7_gLr5yTYij1z8Qrki8ekffX-0g7-GMfg09gl
+  params:
+    - name: x-csrf-token
+      value: ceMTzLYyF6KiTTgbapgLrOoA8r6aMF0FK3iTAg6EIasn0ml2RYF29IMBdpKPdAgvWrU_n44539-jUW0oH0mjZzi2QpwftlES
+      type: query
+      disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

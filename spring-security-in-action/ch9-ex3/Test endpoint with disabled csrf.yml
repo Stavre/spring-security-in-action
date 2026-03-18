@@ -1,0 +1,15 @@
+info:
+  name: Test endpoint with disabled csrf
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: http://localhost:8080/ciao
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

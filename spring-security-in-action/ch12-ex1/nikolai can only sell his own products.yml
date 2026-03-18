@@ -1,0 +1,18 @@
+info:
+  name: nikolai can only sell his own products
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: http://localhost:8080/sell
+  auth:
+    type: basic
+    username: nikolai
+    password: "123"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

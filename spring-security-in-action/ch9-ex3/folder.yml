@@ -1,0 +1,7 @@
+info:
+  name: ch9-ex3
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit

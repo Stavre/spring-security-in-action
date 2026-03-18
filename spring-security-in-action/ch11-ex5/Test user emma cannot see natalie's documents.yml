@@ -1,0 +1,18 @@
+info:
+  name: Test user emma cannot see natalie's documents
+  type: http
+  seq: 4
+
+http:
+  method: GET
+  url: http://localhost:8080/documents/qwe123
+  auth:
+    type: basic
+    username: emma
+    password: "123"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
